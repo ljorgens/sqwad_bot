@@ -1,12 +1,4 @@
-# Description:
-#   Example scripts for you to examine and try out.
-#
-# Notes:
-#   They are commented out by default, because most of them are pretty silly and
-#   wouldn't be useful and amusing enough for day to day huboting.
-#   Uncomment the ones you want to try and experiment with.
-#
-#   These are from the scripting documentation: https://github.com/github/hubot/blob/master/docs/scripting.md
+require('dotenv').config();
 _ = require("lodash")
 filesize = require('filesize')
 firebase = require('./firebase')
@@ -16,6 +8,9 @@ moment = require('moment')
 module.exports = (robot) ->
   robot.respond /(.*)information?/i, (msg) ->
     msg.send "Firebase backup service!"
+
+  robot.respond /firebase url/i, (msg) ->
+    msg.send "#{process.env.FIREBASE_URL}"
 
   robot.respond /how big is firebase?/i, (msg) ->
     firebase.size (err, bytes) ->

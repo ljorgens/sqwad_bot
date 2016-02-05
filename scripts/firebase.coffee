@@ -5,10 +5,10 @@ FirebaseTokenGenerator = require('firebase-token-generator')
 moment = require('moment')
 
 authenticateFirebase = (cb) ->
-  rootRef = new Firebase('FIREBASE_URL')
-  tokenGenerator = new FirebaseTokenGenerator('FIREBASE_TOKEN')
+  rootRef = new Firebase('https://whawksv2.firebaseio.com')
+  tokenGenerator = new FirebaseTokenGenerator('K9tFR6FnYlO39oWl3tYKnWd90LuMrYD66vW7o1gk')
   token = tokenGenerator.createToken(
-    uid: 'SOME_UID'
+    uid: '57fcc978-6ca9-49ac-a4cb-860ad625dd56'
     name: 'sqwad-droid')
   rootRef.authWithCustomToken token, (error, authData) ->
     if error
