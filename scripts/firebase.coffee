@@ -32,7 +32,7 @@ uploadtoS3 = (data, cb) ->
   date = new Date
   today = moment(date).format('YYYY-MM-DD')
   payload = JSON.stringify(data)
-  AWS.config.region = 'us-west-1'
+  AWS.config.region = 'us-west-2'
   s3 = new (AWS.S3)
   s3.createBucket { Bucket: 'firebase-backups' }, ->
     params =
