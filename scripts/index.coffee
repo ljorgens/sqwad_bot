@@ -39,10 +39,10 @@ module.exports = (robot) ->
   new CronJob('0 0 10 * * *', (->
     firebase.backup (err, result) ->
       if err
-        robot.messageRoom "release", "Something went wrong! #{err.message}"
+        robot.messageRoom "releases", "Something went wrong! #{err.message}"
       else
         today = moment(new Date()).format('YYYY-MM-DD')
         size = filesize(result)
-        robot.messageRoom "release", "#{today}: #{size} of data successfully backed up!"
+        robot.messageRoom "releases", "#{today}: #{size} of data successfully backed up!"
     return
   ), null, true, 'America/Los_Angeles')
