@@ -34,9 +34,9 @@ uploadtoS3 = (data, cb) ->
   payload = JSON.stringify(data)
   AWS.config.region = 'us-west-2'
   s3 = new (AWS.S3)
-  s3.createBucket { Bucket: 'firebase-backups' }, ->
+  s3.createBucket { Bucket: 'pick6-firebase-backups' }, ->
     params =
-      Bucket: 'firebase-backups'
+      Bucket: 'pick6-firebase-backups'
       Key: today
       Body: payload
     s3.upload params, (err, data) ->
