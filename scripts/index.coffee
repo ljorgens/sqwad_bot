@@ -30,9 +30,27 @@ module.exports = (robot) ->
         msg.send "#{today}: #{size} of data successfully backed up!"
     return
 
+  robot.respond /backupStorm firebase/i, (msg) ->
+    firebase.backupStorm (err, result) ->
+      if err
+        msg.send "Something went wrong! #{err.message}"
+      else
+        today = moment(new Date()).format('YYYY-MM-DD')
+        size = filesize(result)
+        msg.send "#{today}: #{size} of Storm data successfully backed up!"
+    return
+
   # Weekly schedule (10am every day)
   new CronJob('00 30 00 * * *', (->
     firebase.backup (err, result) ->
+      if err
+        robot.messageRoom "releases", "Something went wrong! #{err.message}"
+      else
+        today = moment(new Date()).format('YYYY-MM-DD')
+        size = filesize(result)
+        robot.messageRoom "releases", "#{today}: #{size} of data successfully backed up!"
+    return
+    firebase.backupStorm (err, result) ->
       if err
         robot.messageRoom "releases", "Something went wrong! #{err.message}"
       else
