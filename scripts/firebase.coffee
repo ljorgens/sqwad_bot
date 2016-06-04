@@ -5,8 +5,8 @@ FirebaseTokenGenerator = require('firebase-token-generator')
 moment = require('moment')
 
 authenticateStormFirebase = (cb) ->
-  rootRef = new Firebase('STORM_URL')
-  tokenGenerator = new FirebaseTokenGenerator('STORM_KEY')
+  rootRef = new Firebase('FIREBASE_URL')
+  tokenGenerator = new FirebaseTokenGenerator('FIREBASE_TOKEN')
   token = tokenGenerator.createToken(
     uid: 'SOME_UID'
     name: 'sqwad-droid')
