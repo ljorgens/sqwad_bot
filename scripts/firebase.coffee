@@ -37,6 +37,7 @@ authenticateFirebase = (cb) ->
 exportFirebaseData = (rootRef, cb) ->
   rootRef.once 'value', ((snap) ->
     rootRef = rootRef
+    # make data multiple things so can later use as reference to whichever DB I am saving
     data = [snap.exportVal(), rootRef]
     cb null, data
     return
@@ -53,6 +54,7 @@ uploadtoS3 = (data, cb) ->
   payload = JSON.stringify(data)
   AWS.config.region = 'us-west-2'
   s3 = new (AWS.S3)
+  #check to see if it is the Storm db or not
   if name is 'STORM_URL'
     s3.createBucket { Bucket: 'storm-firebase-backups' }, ->
       params =
