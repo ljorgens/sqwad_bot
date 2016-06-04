@@ -41,7 +41,7 @@ module.exports = (robot) ->
     return
 
   # Weekly schedule (10am every day)
-  new CronJob('00 00 10 * * *', (->
+  new CronJob('0 0 10 * * *', (->
     firebase.backup (err, result) ->
       if err
         robot.messageRoom "releases", "Something went wrong! #{err.message}"
@@ -56,6 +56,6 @@ module.exports = (robot) ->
       else
         today = moment(new Date()).format('YYYY-MM-DD')
         size = filesize(result)
-        robot.messageRoom "releases", "#{today}: #{size} of data successfully backed up!"
+        robot.messageRoom "releases", "#{today}: #{size} of Storm data successfully backed up!"
     return
   ), null, true, 'America/Los_Angeles')
