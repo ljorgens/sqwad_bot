@@ -8,7 +8,7 @@ authenticateStormFirebase = (cb) ->
   rootRef = new Firebase('STORM_URL')
   tokenGenerator = new FirebaseTokenGenerator('STORM_KEY')
   token = tokenGenerator.createToken(
-    uid: '57fcc978-6ca9-49ac-a4cb-860ad625dd56'
+    uid: 'SOME_UID'
     name: 'sqwad-droid')
     
   rootRef.authWithCustomToken token, (error, authData) ->
@@ -23,7 +23,7 @@ authenticateFirebase = (cb) ->
   rootRef = new Firebase('FIREBASE_URL')
   tokenGenerator = new FirebaseTokenGenerator('FIREBASE_TOKEN')
   token = tokenGenerator.createToken(
-    uid: '57fcc978-6ca9-49ac-a4cb-860ad625dd56'
+    uid: 'SOME_UID'
     name: 'sqwad-droid')
 
   rootRef.authWithCustomToken token, (error, authData) ->
