@@ -21,7 +21,7 @@ authenticateStormFirebase = (cb) ->
 
 authenticateFirebase = (cb) ->
   rootRef = new Firebase('FIREBASE_URL')
-  tokenGenerator = new FirebaseTokenGenerator('FIREBASE_KEY')
+  tokenGenerator = new FirebaseTokenGenerator('FIREBASE_TOKEN')
   token = tokenGenerator.createToken(
     uid: '57fcc978-6ca9-49ac-a4cb-860ad625dd56'
     name: 'sqwad-droid')
