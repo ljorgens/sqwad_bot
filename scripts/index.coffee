@@ -50,6 +50,9 @@ module.exports = (robot) ->
         size = filesize(result)
         robot.messageRoom "releases", "#{today}: #{size} of data successfully backed up!"
     return
+  ), null, true, 'America/Los_Angeles')
+  
+  new CronJob('0 0 10 * * *', (->
     firebase.backupStorm (err, result) ->
       if err
         robot.messageRoom "releases", "Something went wrong! #{err.message}"
