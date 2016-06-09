@@ -41,7 +41,7 @@ module.exports = (robot) ->
     return
 
   # Weekly schedule (10am every day)
-  new CronJob('0 0 10 * * *', (->
+  new CronJob('0 10 * * *', (->
     firebase.backup (err, result) ->
       if err
         robot.messageRoom "releases", "Something went wrong! #{err.message}"
@@ -52,7 +52,7 @@ module.exports = (robot) ->
     return
   ), null, true, 'America/Los_Angeles')
   
-  new CronJob('0 0 10 * * *', (->
+  new CronJob('0 10 * * *', (->
     firebase.backupStorm (err, result) ->
       if err
         robot.messageRoom "releases", "Something went wrong! #{err.message}"
