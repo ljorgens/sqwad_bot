@@ -64,6 +64,7 @@ exportFirebaseData = (rootRef, cb) ->
 
 uploadtoS3 = (data, cb) ->
   name = data[1].root().toString()
+  console.log(name)
   data = data[0]
   date = new Date
   today = moment(date).format('YYYY-MM-DD')
@@ -95,18 +96,18 @@ uploadtoS3 = (data, cb) ->
         return
       return
     return
-  else
-    s3.createBucket { Bucket: 'pick6-firebase-backups' }, ->
-      params =
-        Bucket: 'pick6-firebase-backups'
-        Key: today
-        Body: payload
-      s3.upload params, (err, data) ->
-        bytes = Buffer.byteLength(payload, 'utf8')
-        cb err, bytes
-        return
-      return
-    return
+  # else
+  #   s3.createBucket { Bucket: 'pick6-firebase-backups' }, ->
+  #     params =
+  #       Bucket: 'pick6-firebase-backups'
+  #       Key: today
+  #       Body: payload
+  #     s3.upload params, (err, data) ->
+  #       bytes = Buffer.byteLength(payload, 'utf8')
+  #       cb err, bytes
+  #       return
+  #     return
+  #   return
 
 module.exports = 
   backup: (cb) ->
