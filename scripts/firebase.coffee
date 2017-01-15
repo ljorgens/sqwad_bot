@@ -72,7 +72,7 @@ uploadtoS3 = (data, cb) ->
   AWS.config.region = 'us-west-2'
   s3 = new (AWS.S3)
   #check to see if it is the Storm db or not
-  if name is 'https://stormdbversion2.firebaseio.com'
+  if name is 'https://stormdbversion2.firebaseio.com/'
     s3.createBucket { Bucket: 'storm-firebase-backups' }, ->
       params =
         Bucket: 'storm-firebase-backups'
@@ -84,7 +84,7 @@ uploadtoS3 = (data, cb) ->
         return
       return
     return
-  else if name is 'https://checkersdbtest.firebaseio.com'
+  else if name is 'https://checkersdbtest.firebaseio.com/'
     s3.createBucket { Bucket: 'checkers-firebase-backups' }, ->
       params =
         Bucket: 'checkers-firebase-backups'
@@ -96,18 +96,18 @@ uploadtoS3 = (data, cb) ->
         return
       return
     return
-  # else
-  #   s3.createBucket { Bucket: 'pick6-firebase-backups' }, ->
-  #     params =
-  #       Bucket: 'pick6-firebase-backups'
-  #       Key: today
-  #       Body: payload
-  #     s3.upload params, (err, data) ->
-  #       bytes = Buffer.byteLength(payload, 'utf8')
-  #       cb err, bytes
-  #       return
-  #     return
-  #   return
+  else if name is 'https://whawksv2.firebaseio.com/'
+    s3.createBucket { Bucket: 'pick6-firebase-backups' }, ->
+      params =
+        Bucket: 'pick6-firebase-backups'
+        Key: today
+        Body: payload
+      s3.upload params, (err, data) ->
+        bytes = Buffer.byteLength(payload, 'utf8')
+        cb err, bytes
+        return
+      return
+    return
 
 module.exports = 
   backup: (cb) ->
