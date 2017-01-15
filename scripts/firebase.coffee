@@ -33,6 +33,22 @@ authenticateFirebase = (cb) ->
       cb null, rootRef
     return
   return
+  
+  
+authenticateCheckersFirebase = (cb) ->
+  rootRef = new Firebase('https://checkersdbtest.firebaseio.com/')
+  tokenGenerator = new FirebaseTokenGenerator('4QWMk6pn3FfsVvbckCoXtTDhVVzCc0JdbHtdwzDk')
+  token = tokenGenerator.createToken(
+    uid: '57fcc978-6ca9-49ac-a4cb-860ad625dd56'
+    name: 'sqwad-droid')
+
+  rootRef.authWithCustomToken token, (error, authData) ->
+    if error
+      cb error
+    else
+      cb null, rootRef
+    return
+  return
 
 exportFirebaseData = (rootRef, cb) ->
   rootRef.once 'value', ((snap) ->
@@ -67,10 +83,10 @@ uploadtoS3 = (data, cb) ->
         return
       return
     return
-  else
-    s3.createBucket { Bucket: 'pick6-firebase-backups' }, ->
+  else if name is 'https://checkersdbtest.firebaseio.com'
+    s3.createBucket { Bucket: 'checkers-firebase-backups' }, ->
       params =
-        Bucket: 'pick6-firebase-backups'
+        Bucket: 'checkers-firebase-backups'
         Key: today
         Body: payload
       s3.upload params, (err, data) ->
@@ -79,11 +95,33 @@ uploadtoS3 = (data, cb) ->
         return
       return
     return
+  # else
+  #   s3.createBucket { Bucket: 'pick6-firebase-backups' }, ->
+  #     params =
+  #       Bucket: 'pick6-firebase-backups'
+  #       Key: today
+  #       Body: payload
+  #     s3.upload params, (err, data) ->
+  #       bytes = Buffer.byteLength(payload, 'utf8')
+  #       cb err, bytes
+  #       return
+  #     return
+  #   return
 
 module.exports = 
   backup: (cb) ->
     async.waterfall [
       authenticateFirebase
+      exportFirebaseData
+      uploadtoS3
+    ], (err, result) ->
+      if err
+        cb(err)
+      else
+        cb(null, result)
+  backupStorm: (cb) ->
+    async.waterfall [
+      authenticateStormFirebase
       exportFirebaseData
       uploadtoS3
     ], (err, result) ->
