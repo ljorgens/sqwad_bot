@@ -49,6 +49,21 @@ authenticateCheckersFirebase = (cb) ->
       cb null, rootRef
     return
   return
+  
+authenticateChiefsFirebase = (cb) ->
+  rootRef = new Firebase('https://spokane-chiefs.firebaseio.com/')
+  tokenGenerator = new FirebaseTokenGenerator('izH0DdfE7GtmE5XpWF5qjUP1z80nM3PzvoP3bGcq')
+  token = tokenGenerator.createToken(
+    uid: '57fcc978-6ca9-49ac-a4cb-860ad625dd56'
+    name: 'sqwad-droid')
+
+  rootRef.authWithCustomToken token, (error, authData) ->
+    if error
+      cb error
+    else
+      cb null, rootRef
+    return
+  return
 
 exportFirebaseData = (rootRef, cb) ->
   rootRef.once 'value', ((snap) ->
@@ -108,6 +123,19 @@ uploadtoS3 = (data, cb) ->
         return
       return
     return
+  else if name is 'https://spokane-chiefs.firebaseio.com/'
+    s3.createBucket { Bucket: 'spokane-chiefs-firebase-backups' }, ->
+      params =
+        Bucket: 'spokane-chiefs-firebase-backups'
+        Key: today
+        Body: payload
+      s3.upload params, (err, data) ->
+        bytes = Buffer.byteLength(payload, 'utf8')
+        cb err, bytes
+        return
+      return
+    return
+
 
 module.exports = 
   backup: (cb) ->
@@ -133,6 +161,16 @@ module.exports =
   backupCheckers: (cb) ->
     async.waterfall [
       authenticateCheckersFirebase
+      exportFirebaseData
+      uploadtoS3
+    ], (err, result) ->
+      if err
+        cb(err)
+      else
+        cb(null, result)
+  backupChiefs: (cb) ->
+    async.waterfall [
+      authenticateChiefsFirebase
       exportFirebaseData
       uploadtoS3
     ], (err, result) ->

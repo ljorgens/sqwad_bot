@@ -49,8 +49,18 @@ module.exports = (robot) ->
         size = filesize(result)
         msg.send "#{today}: #{size} of Checkers data successfully backed up!"
     return
+  # add another command to back up Spokane Firebase
+  robot.respond /backupChiefs firebase/i, (msg) ->
+    firebase.backupChiefs (err, result) ->
+      if err
+        msg.send "Something went wrong! #{err.message}"
+      else
+        today = moment(new Date()).format('YYYY-MM-DD')
+        size = filesize(result)
+        msg.send "#{today}: #{size} of Spokane data successfully backed up!"
+    return
 
-  # Weekly schedule (10am every day)
+  # Weekly schedule (10:06am every day)
   new CronJob('06 10 * * *', (->
     firebase.backup (err, result) ->
       if err
@@ -70,5 +80,27 @@ module.exports = (robot) ->
         today = moment(new Date()).format('YYYY-MM-DD')
         size = filesize(result)
         robot.messageRoom "releases", "#{today}: #{size} of Storm data successfully backed up!"
+    return
+  ), null, true, 'America/Los_Angeles')
+  
+  new CronJob('06 10 * * *', (->
+    firebase.backupCheckers (err, result) ->
+      if err
+        robot.messageRoom "releases", "Something went wrong! #{err.message}"
+      else
+        today = moment(new Date()).format('YYYY-MM-DD')
+        size = filesize(result)
+        robot.messageRoom "releases", "#{today}: #{size} of Checkers data successfully backed up!"
+    return
+  ), null, true, 'America/Los_Angeles')
+  
+  new CronJob('06 10 * * *', (->
+    firebase.backupChiefs (err, result) ->
+      if err
+        robot.messageRoom "releases", "Something went wrong! #{err.message}"
+      else
+        today = moment(new Date()).format('YYYY-MM-DD')
+        size = filesize(result)
+        robot.messageRoom "releases", "#{today}: #{size} of Spokane data successfully backed up!"
     return
   ), null, true, 'America/Los_Angeles')
