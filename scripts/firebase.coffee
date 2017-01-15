@@ -95,18 +95,18 @@ uploadtoS3 = (data, cb) ->
         return
       return
     return
-  # else
-  #   s3.createBucket { Bucket: 'pick6-firebase-backups' }, ->
-  #     params =
-  #       Bucket: 'pick6-firebase-backups'
-  #       Key: today
-  #       Body: payload
-  #     s3.upload params, (err, data) ->
-  #       bytes = Buffer.byteLength(payload, 'utf8')
-  #       cb err, bytes
-  #       return
-  #     return
-  #   return
+  else
+    s3.createBucket { Bucket: 'pick6-firebase-backups' }, ->
+      params =
+        Bucket: 'pick6-firebase-backups'
+        Key: today
+        Body: payload
+      s3.upload params, (err, data) ->
+        bytes = Buffer.byteLength(payload, 'utf8')
+        cb err, bytes
+        return
+      return
+    return
 
 module.exports = 
   backup: (cb) ->
@@ -129,9 +129,9 @@ module.exports =
         cb(err)
       else
         cb(null, result)
-  backupStorm: (cb) ->
+  backupCheckers: (cb) ->
     async.waterfall [
-      authenticateStormFirebase
+      authenticateCheckersFirebase
       exportFirebaseData
       uploadtoS3
     ], (err, result) ->
